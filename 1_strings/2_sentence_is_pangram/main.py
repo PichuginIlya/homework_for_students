@@ -4,9 +4,11 @@
 Буквы в верхнем и нижнем регистрах считаются эквивалентными.
 Предложения содержат только буквы английского алфавита, без пробелов и т.п.
 Проверка:
-pytest ./2_sentence_is_pangram/test.py
+pytest ./1_strings/2_sentence_is_pangram/test.py
 """
 
 
 def is_sentence_is_pangram(sentence: str) -> bool:
-    """Пишите ваш код здесь."""
+    alphabet = set('abcdefghijklmnopqrstuvwxyz')
+    sentence_test = set(sentence.lower())
+    return alphabet.issubset(sentence_test)
