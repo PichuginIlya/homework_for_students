@@ -1,4 +1,5 @@
 import os
+from decimal import Decimal
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SPLIT_SYMBOL = '\n'
@@ -19,8 +20,21 @@ def get_employees_info() -> list[str]:
 
 def get_parsed_employees_info() -> list[dict[str, int | str]]:
     """Функция парсит данные, полученные из внешнего API и приводит их к стандартизированному виду."""
-    _ = get_employees_info()
+    employees_info = get_employees_info()
     parsed_employees_info = []
 
-    # Ваш код ниже
+    for line in employees_info:
+        words = line.split()
+        employee_data = {}
+        for i in range(0, len(words), 2):
+            key = words[i]
+            value = words[i + 1]
+            if key in ['id', 'age']:
+                employee_data[key] = int(value)
+            elif key == 'salary':
+                employee_data[key] = Decimal(value)
+            elif key in ['name', 'last_name', 'position']:
+                employee_data[key] = value
+        parsed_employees_info.append(employee_data)
+
     return parsed_employees_info
