@@ -1,4 +1,4 @@
-from typing import Generator, Iterable, TypeVar
+from typing import Generator, Iterable, TypeVar, Iterator
 
 T = TypeVar("T")
 
@@ -14,19 +14,17 @@ def cycle(obj: Iterable[T]) -> Generator[T, None, None]:
 
 
 class Cycle:
-    def __init__(self, obj: Iterable[T]):
-        self.obj = obj
-        self.saved = []
-        self.iterator = iter(obj)
+    def __init__(self, iterable: Iterable[T]):
+        self.iterable = iterable
+        self.saved = list(iterable)  
+        self.iterator = iter(self.saved)
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[T]:
         return self
 
-    def __next__(self):
+    def __next__(self) -> T:
         try:
-            item = next(self.iterator)
-            self.saved.append(item)
-            return item
+            return next(self.iterator)
         except StopIteration:
             self.iterator = iter(self.saved)
             return next(self.iterator)
